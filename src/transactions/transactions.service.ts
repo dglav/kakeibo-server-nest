@@ -7,6 +7,10 @@ import { CreateTransactionDto } from './dto/create-transaction-dto';
 export class TransactionsService {
   private transactions: Transaction[] = [];
 
+  getAllTransactions() {
+    return this.transactions;
+  }
+
   createTransaction(transactionDto: CreateTransactionDto): Transaction {
     const { type, name, amount, currency, envelopeId, date } = transactionDto;
     const currentDate = new Date().toISOString();
