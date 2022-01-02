@@ -1,33 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { Transaction } from './transaction.model';
-import { v4 as uuid } from 'uuid';
+import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction-dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TransactionsService {
-  private transactions: Transaction[] = [];
+  constructor(
+    @InjectRepository(Transaction)
+    private transactionRepository: Repository<Transaction>,
+  ) {}
 
-  getAllTransactions() {
-    return this.transactions;
+  getTransactions(): Promise<Transaction[]> {
+    return this.transactionRepository.find();
   }
 
-  createTransaction(transactionDto: CreateTransactionDto): Transaction {
+  createTransaction(
+    transactionDto: CreateTransactionDto,
+  ): Promise<Transaction> {
     const { type, name, amount, currency, envelopeId, date } = transactionDto;
-    const currentDate = new Date().toISOString();
 
-    const transaction = {
-      id: uuid(),
+    const transaction = this.transactionRepository.create({
       name,
       amount,
       currency,
       envelopeId,
       type,
       date,
-      createdAt: currentDate,
-      updatedAt: currentDate,
-    };
+    });
 
-    this.transactions.push(transaction);
-    return transaction;
+    return this.transactionRepository.save(transaction);
   }
 }
