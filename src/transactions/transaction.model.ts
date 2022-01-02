@@ -5,5 +5,5 @@ export enum TransactionType {
 
 export enum TransactionCurrency {
   'US' = 'US',
-  'JPN' = 'JPN',
+  'JPY' = 'JPY',
 }
