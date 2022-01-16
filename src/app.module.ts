@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsModule } from './transactions/transactions.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,8 +16,8 @@ import { TransactionsModule } from './transactions/transactions.module';
       autoLoadEntities: true,
     }),
     TransactionsModule,
+    AuthModule,
   ],
-  controllers: [],
   providers: [],
 })
 export class AppModule {}
