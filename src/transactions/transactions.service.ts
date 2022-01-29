@@ -1,3 +1,4 @@
+import { GetTransactionsDto } from './dto/get-transactions-dto';
 import { Injectable } from '@nestjs/common';
 import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction-dto';
@@ -11,8 +12,16 @@ export class TransactionsService {
     private transactionRepository: Repository<Transaction>,
   ) {}
 
-  getTransactions(): Promise<Transaction[]> {
-    return this.transactionRepository.find();
+  getTransactions(
+    getTransactionsDto: GetTransactionsDto,
+  ): Promise<Transaction[]> {
+    const { order } = getTransactionsDto;
+
+    return this.transactionRepository.find({
+      order: {
+        date: order ?? 'DESC',
+      },
+    });
   }
 
   createTransaction(
