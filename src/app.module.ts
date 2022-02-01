@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsModule } from './transactions/transactions.module';
 import { AuthModule } from './auth/auth.module';
+import { EnvelopesModule } from './envelopes/envelopes.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -12,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     TransactionsModule,
     AuthModule,
+    EnvelopesModule,
   ],
   providers: [],
 })

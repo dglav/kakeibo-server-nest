@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Envelope } from '../envelopes/envelope.entity';
 import { TransactionCurrency, TransactionType } from './transaction.model';
 
 @Entity()
@@ -24,9 +26,6 @@ export class Transaction {
   @Column()
   currency: TransactionCurrency;
 
-  @Column()
-  envelopeId: string;
-
   @Column({ type: 'timestamp' })
   date: string;
 
@@ -35,4 +34,7 @@ export class Transaction {
 
   @UpdateDateColumn()
   updatedAt: string;
+
+  @ManyToOne(() => Envelope, (envelope) => envelope.transactions)
+  envelope: Envelope;
 }

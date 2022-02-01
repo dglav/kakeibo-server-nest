@@ -4,12 +4,15 @@ import { Transaction } from './transaction.entity';
 import { CreateTransactionDto } from './dto/create-transaction-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Envelope } from '../envelopes/envelope.entity';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
+    @InjectRepository(Envelope)
+    private envelopeRepository: Repository<Envelope>,
   ) {}
 
   getTransactions(
@@ -21,21 +24,26 @@ export class TransactionsService {
       order: {
         date: order ?? 'DESC',
       },
+      relations: ['envelope'],
     });
   }
 
-  createTransaction(
+  async createTransaction(
     transactionDto: CreateTransactionDto,
   ): Promise<Transaction> {
-    const { type, name, amount, currency, envelopeId, date } = transactionDto;
+    const { type, name, amount, currency, envelopeName, date } = transactionDto;
 
-    const transaction = this.transactionRepository.create({
+    const envelope = await this.envelopeRepository.findOne({
+      name: envelopeName,
+    });
+
+    const transaction: Transaction = this.transactionRepository.create({
       name,
       amount,
       currency,
-      envelopeId,
       type,
       date,
+      envelope,
     });
 
     return this.transactionRepository.save(transaction);

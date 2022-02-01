@@ -5,6 +5,6 @@ export class CreateTransactionDto {
   type: TransactionType;
   amount: number;
   currency: TransactionCurrency;
-  envelopeId: string;
+  envelopeName: string;
   date: string;
 }
