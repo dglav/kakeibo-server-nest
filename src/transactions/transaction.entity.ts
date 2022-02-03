@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../auth/user.entity';
 import { Envelope } from '../envelopes/envelope.entity';
 import { TransactionCurrency, TransactionType } from './transaction.model';
 
@@ -37,4 +39,8 @@ export class Transaction {
 
   @ManyToOne(() => Envelope, (envelope) => envelope.transactions)
   envelope: Envelope;
+
+  @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
+  @Exclude({ toPlainOnly: true })
+  user: User;
 }

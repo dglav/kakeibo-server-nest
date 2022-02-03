@@ -1,5 +1,7 @@
 import { Controller, Post, Body, Get, UseGuards, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 import { CreateTransactionDto } from './dto/create-transaction-dto';
 import { GetTransactionsDto } from './dto/get-transactions-dto';
 import { Transaction } from './transaction.entity';
@@ -19,8 +21,9 @@ export class TransactionsController {
 
   @Post()
   createTransaction(
+    @GetUser() user: User,
     @Body() transactionDto: CreateTransactionDto,
   ): Promise<Transaction> {
-    return this.transactionService.createTransaction(transactionDto);
+    return this.transactionService.createTransaction(transactionDto, user);
   }
 }

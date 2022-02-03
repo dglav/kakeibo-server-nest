@@ -5,6 +5,7 @@ import { CreateTransactionDto } from './dto/create-transaction-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Envelope } from '../envelopes/envelope.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class TransactionsService {
@@ -30,6 +31,7 @@ export class TransactionsService {
 
   async createTransaction(
     transactionDto: CreateTransactionDto,
+    user: User,
   ): Promise<Transaction> {
     const { type, name, amount, currency, envelopeName, date } = transactionDto;
 
@@ -44,6 +46,7 @@ export class TransactionsService {
       type,
       date,
       envelope,
+      user,
     });
 
     return this.transactionRepository.save(transaction);
