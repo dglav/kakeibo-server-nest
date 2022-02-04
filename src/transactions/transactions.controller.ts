@@ -21,9 +21,8 @@ export class TransactionsController {
 
   @Post()
   createTransaction(
-    @GetUser() user: User,
     @Body() transactionDto: CreateTransactionDto,
   ): Promise<Transaction> {
-    return this.transactionService.createTransaction(transactionDto, user);
+    return this.transactionService.createTransaction(transactionDto);
   }
 }
