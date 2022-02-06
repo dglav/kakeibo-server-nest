@@ -31,6 +31,7 @@ export class TransactionsService {
 
   async createTransaction(
     transactionDto: CreateTransactionDto,
+    user: User,
   ): Promise<Transaction> {
     const { type, name, amount, currency, envelopeName, date } = transactionDto;
 
@@ -45,9 +46,8 @@ export class TransactionsService {
       type,
       date,
       envelope,
+      user,
     });
-
-    console.log({ transaction });
 
     return this.transactionRepository.save(transaction);
   }
