@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "dokku": {
+      "postdeploy": "node ./node_modules/typeorm/cli migration:run"
+    }
+  }
+}
