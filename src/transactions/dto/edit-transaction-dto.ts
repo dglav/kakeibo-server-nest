@@ -1,10 +1,3 @@
-import { TransactionCurrency, TransactionType } from '../transaction.model';
+import { CreateTransactionDto } from './create-transaction-dto';
 
-export class EditTransactionDto {
-  name: string;
-  type: TransactionType;
-  amount: number;
-  currency: TransactionCurrency;
-  envelopeName: string;
-  date: string;
-}
+export class EditTransactionDto extends CreateTransactionDto {}
