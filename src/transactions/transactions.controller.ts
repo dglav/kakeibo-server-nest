@@ -7,6 +7,8 @@ import {
   Query,
   Patch,
   Param,
+  ParseUUIDPipe,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
@@ -27,6 +29,17 @@ export class TransactionsController {
     @Query() getTransactionsDto: GetTransactionsDto,
   ): Promise<Transaction[]> {
     return this.transactionService.getTransactions(getTransactionsDto);
+  }
+
+  @Get('/:transactionId')
+  getTransaction(
+    @Param(
+      'transactionId',
+      new ParseUUIDPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    transactionId: string,
+  ) {
+    return this.transactionService.getTransaction(transactionId);
   }
 
   @Post()

@@ -30,6 +30,16 @@ export class TransactionsService {
     });
   }
 
+  async getTransaction(id: string) {
+    const transaction = await this.transactionRepository.findOne(id);
+
+    if (!transaction) {
+      throw new NotFoundException('transaction ID does not exist');
+    }
+
+    return transaction;
+  }
+
   async createTransaction(
     transactionDto: CreateTransactionDto,
     user: User,
