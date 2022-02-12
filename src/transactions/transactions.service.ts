@@ -31,7 +31,9 @@ export class TransactionsService {
   }
 
   async getTransaction(id: string) {
-    const transaction = await this.transactionRepository.findOne(id);
+    const transaction = await this.transactionRepository.findOne(id, {
+      relations: ['envelope'],
+    });
 
     if (!transaction) {
       throw new NotFoundException('transaction ID does not exist');
