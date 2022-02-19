@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../auth/user.entity';
@@ -25,11 +30,20 @@ export class EnvelopesService {
   }
 
   async deleteEnvelope(id: string): Promise<'success'> {
-    const result = await this.envelopeRepository.delete(id);
-
-    if (!result.affected) {
-      throw new NotFoundException('Envelope does not exist');
+    try {
+      const result = await this.envelopeRepository.delete(id);
+      if (!result.affected) {
+        throw new NotFoundException('Envelope does not exist');
+      }
+    } catch (error) {
+      if (error.code === '23503') {
+        throw new ConflictException(
+          'Envelope is used in a transaction. Please remove all references to this envelope.',
+        );
+      }
+      throw new InternalServerErrorException();
     }
+
     return 'success';
   }
 }
