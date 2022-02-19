@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../auth/user.entity';
@@ -22,5 +22,14 @@ export class EnvelopesService {
       user,
     });
     return this.envelopeRepository.save(envelope);
+  }
+
+  async deleteEnvelope(id: string): Promise<'success'> {
+    const result = await this.envelopeRepository.delete(id);
+
+    if (!result.affected) {
+      throw new NotFoundException('Envelope does not exist');
+    }
+    return 'success';
   }
 }

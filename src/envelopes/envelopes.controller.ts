@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  UseGuards,
+  NotFoundException,
+  Param,
+  ParseUUIDPipe,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
@@ -22,5 +33,16 @@ export class EnvelopesController {
     @Body() addEnvelopeDto: AddEnvelopeDto,
   ): Promise<Envelope> {
     return this.envelopesService.addEnvelope(addEnvelopeDto, user);
+  }
+
+  @Delete(':id')
+  deleteEnvelope(
+    @Param(
+      'id',
+      new ParseUUIDPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: string,
+  ): Promise<'success'> | NotFoundException {
+    return this.envelopesService.deleteEnvelope(id);
   }
 }
