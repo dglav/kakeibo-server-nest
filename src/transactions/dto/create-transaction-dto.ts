@@ -7,7 +7,8 @@ import {
   Min,
   IsDateString,
 } from 'class-validator';
-import { TransactionType, TransactionCurrency } from '../transaction.model';
+import { TransactionCurrency } from '../../commonTypes';
+import { TransactionType } from '../transaction.model';
 
 export class CreateTransactionDto {
   @IsString()

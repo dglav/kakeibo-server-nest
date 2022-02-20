@@ -8,8 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
+import { TransactionCurrency } from '../commonTypes';
 import { Envelope } from '../envelopes/envelope.entity';
-import { TransactionCurrency, TransactionType } from './transaction.model';
+import { TransactionType } from './transaction.model';
 
 @Entity()
 export class Transaction {
