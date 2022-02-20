@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsEnum, Length, Min } from 'class-validator';
+import { IsEnum, Length } from 'class-validator';
 import { TransactionCurrency } from '../../commonTypes';
 
 export class AddEnvelopeDto {
@@ -10,7 +10,6 @@ export class AddEnvelopeDto {
   description: string;
 
   @Type(() => Number)
-  @Min(0)
   amount: number;
 
   @IsEnum(TransactionCurrency)
