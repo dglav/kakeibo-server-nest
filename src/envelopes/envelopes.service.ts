@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../auth/user.entity';
 import { AddEnvelopeDto } from './dto/add-envelope-dto';
+import { UpdateEnvelopeDto } from './dto/update-envelope-dto';
 import { Envelope } from './envelope.entity';
 
 @Injectable()
@@ -19,6 +20,10 @@ export class EnvelopesService {
 
   getEnvelopes() {
     return this.envelopeRepository.find();
+  }
+
+  getEnvelope(id: string): Promise<Envelope> {
+    return this.envelopeRepository.findOne(id);
   }
 
   addEnvelope(addEnvelopeDto: AddEnvelopeDto, user: User) {
@@ -45,5 +50,21 @@ export class EnvelopesService {
     }
 
     return 'success';
+  }
+
+  async updateEnvelope(
+    id: string,
+    updateEnvelopeDto: UpdateEnvelopeDto,
+  ): Promise<Envelope> {
+    const updateresult = await this.envelopeRepository.update(
+      id,
+      updateEnvelopeDto,
+    );
+
+    if (!updateresult.affected) {
+      throw new NotFoundException('envelope does not exist');
+    }
+
+    return this.envelopeRepository.findOne(id);
   }
 }
