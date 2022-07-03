@@ -9,11 +9,13 @@ import {
   Param,
   ParseUUIDPipe,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { AddEnvelopeDto } from './dto/add-envelope-dto';
+import { EditEnvelopeDto } from './dto/edit-envelope-dto';
 import { Envelope } from './envelope.entity';
 import { EnvelopesService } from './envelopes.service';
 
@@ -33,6 +35,14 @@ export class EnvelopesController {
     @Body() addEnvelopeDto: AddEnvelopeDto,
   ): Promise<Envelope> {
     return this.envelopesService.addEnvelope(addEnvelopeDto, user);
+  }
+
+  @Patch('/:id')
+  editEnvelope(
+    @Param('id') id: string,
+    @Body() editEnvelopeDto: Partial<EditEnvelopeDto>,
+  ): Promise<Envelope> {
+    return this.envelopesService.editEnvelope(id, editEnvelopeDto);
   }
 
   @Delete(':id')

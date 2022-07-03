@@ -1,3 +1,4 @@
+import { EditEnvelopeDto } from './dto/edit-envelope-dto';
 import {
   ConflictException,
   Injectable,
@@ -27,6 +28,21 @@ export class EnvelopesService {
       user,
     });
     return this.envelopeRepository.save(envelope);
+  }
+
+  async editEnvelope(id: string, editEnvelopeDto: Partial<EditEnvelopeDto>) {
+    const envelope = await this.envelopeRepository.findOne({
+      id,
+    });
+    if (!envelope) {
+      throw new NotFoundException('Envelope does not exist');
+    }
+
+    const updatedEnvelope = this.envelopeRepository.merge(
+      envelope,
+      editEnvelopeDto,
+    );
+    return this.envelopeRepository.save(updatedEnvelope);
   }
 
   async deleteEnvelope(id: string): Promise<'success'> {
