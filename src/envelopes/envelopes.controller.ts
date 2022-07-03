@@ -29,6 +29,11 @@ export class EnvelopesController {
     return this.envelopesService.getEnvelopes();
   }
 
+  @Get('/:id')
+  getEnvelope(@Param('id') id: string): Promise<Envelope> {
+    return this.envelopesService.getEnvelope(id);
+  }
+
   @Post()
   addEnvelope(
     @GetUser() user: User,

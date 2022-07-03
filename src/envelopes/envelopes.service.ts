@@ -22,6 +22,10 @@ export class EnvelopesService {
     return this.envelopeRepository.find();
   }
 
+  getEnvelope(id: string) {
+    return this.envelopeRepository.findOne({ id });
+  }
+
   addEnvelope(addEnvelopeDto: AddEnvelopeDto, user: User) {
     const envelope = this.envelopeRepository.create({
       ...addEnvelopeDto,
