@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../auth/user.entity';
+import { User } from '../user/user.entity';
 import { TransactionCurrency } from '../commonTypes';
 import { Envelope } from '../envelopes/envelope.entity';
 import { TransactionType } from './transaction.model';

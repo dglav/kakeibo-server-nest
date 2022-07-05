@@ -6,7 +6,7 @@ import { EditTransactionDto } from './dto/edit-transaction-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Envelope } from '../envelopes/envelope.entity';
-import { User } from '../auth/user.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class TransactionsService {
@@ -52,6 +52,10 @@ export class TransactionsService {
       name: envelopeName,
     });
 
+    if (!envelope) {
+      throw new NotFoundException('envelope name does not exist');
+    }
+
     const transaction: Transaction = this.transactionRepository.create({
       name,
       amount,
@@ -80,6 +84,10 @@ export class TransactionsService {
     const envelope = await this.envelopeRepository.findOne({
       name: envelopeName,
     });
+
+    if (!envelope) {
+      throw new NotFoundException('envelope name does not exist');
+    }
 
     const updatedTransaction = {
       ...transaction,

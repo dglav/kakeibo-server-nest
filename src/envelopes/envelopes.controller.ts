@@ -13,14 +13,14 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
-import { User } from '../auth/user.entity';
+import { User } from '../user/user.entity';
 import { AddEnvelopeDto } from './dto/add-envelope-dto';
 import { EditEnvelopeDto } from './dto/edit-envelope-dto';
 import { Envelope } from './envelope.entity';
 import { EnvelopesService } from './envelopes.service';
 
 @Controller('envelopes')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class EnvelopesController {
   constructor(private envelopesService: EnvelopesService) {}
 

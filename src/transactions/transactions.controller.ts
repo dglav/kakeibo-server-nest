@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
-import { User } from '../auth/user.entity';
+import { User } from '../user/user.entity';
 import { CreateTransactionDto } from './dto/create-transaction-dto';
 import { EditTransactionDto } from './dto/edit-transaction-dto';
 import { GetTransactionsDto } from './dto/get-transactions-dto';
@@ -20,7 +20,7 @@ import { Transaction } from './transaction.entity';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class TransactionsController {
   constructor(private transactionService: TransactionsService) {}
 
@@ -43,11 +43,16 @@ export class TransactionsController {
   }
 
   @Post()
-  createTransaction(
+  async createTransaction(
     @Body() transactionDto: CreateTransactionDto,
     @GetUser() user: User,
   ): Promise<Transaction> {
-    return this.transactionService.createTransaction(transactionDto, user);
+    const result = await this.transactionService.createTransaction(
+      transactionDto,
+      user,
+    );
+
+    return result;
   }
 
   @Patch('/:transactionId/edit')

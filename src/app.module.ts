@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransactionsModule } from './transactions/transactions.module';
 import { AuthModule } from './auth/auth.module';
 import { EnvelopesModule } from './envelopes/envelopes.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { EnvelopesModule } from './envelopes/envelopes.module';
     TransactionsModule,
     AuthModule,
     EnvelopesModule,
+    UserModule,
   ],
-  providers: [],
 })
 export class AppModule {}

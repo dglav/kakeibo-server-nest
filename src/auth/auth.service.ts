@@ -1,30 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserCredentialsDto } from './dto/user-credentials.dto';
-import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(UsersRepository)
-    private usersRepository: UsersRepository,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
-  async signUp(userCredentialsDto: UserCredentialsDto): Promise<null> {
-    return this.usersRepository.addUser(userCredentialsDto);
+  async generateHashedPassword(password: string) {
+    const salt = await bcrypt.genSalt();
+    return bcrypt.hash(password, salt);
   }
 
   async signIn(
-    userCredentialsDto: UserCredentialsDto,
+    user: User,
+    userEnteredPassword: string,
   ): Promise<{ accessToken: string }> {
-    const { username, password } = userCredentialsDto;
-
-    const user = await this.usersRepository.findOne({ username });
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await bcrypt.compare(userEnteredPassword, user.password))) {
       throw new UnauthorizedException('please check credentials');
     }
 
